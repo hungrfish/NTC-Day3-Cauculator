@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue@3"></script>
+    <div id="app">
+        <header>Simple Calculator</header>
+        <div>{{initValue}}</div>
+        <template v-for="num in 9">
+            <button @click="addNum(num)">{{ num }}</button>
+          </template>
+          <button @click="addNum(0)">0</button>
+       <br>
+       <template v-for="operator in operators">
+        <button @click="operation(operator)">{{ operator }}</button>
+      </template>
+      <br>
+       <button type="button" @click="initValue='0'">reset</button>
+       <button type="button" @click="equal">=</button>
+    </div>
+    <script>
+         Vue.createApp({
+   data(){
+    return{
+      initValue: '0',
+      operators: ['+', '-', '*', '/'],
+      savedValue: 0,
+      chooseOperator: ''
+    }
+   },
+   methods:{
+       //使得按鈕內數字能夠按照順序輸入在後方
+     addNum(value){
+       if( this.initValue === '0' ){
+         this.initValue = value;
+       }else{
+         this.initValue += value.toString();
+       }
+     },
+     //運算子暫存
+     operation(operator){
+       this.savedValue = Number(this.initValue);
+       this.initValue = '0';
+       this.chooseOperator = operator;
+     },
+     //運算
+     equal(){
+         switch(this.chooseOperator){
+             case'+':
+             this.initValue=`${this.savedValue+Number(this.initValue)}`;
+             break;
+             case'-':
+             this.initValue=`${this.savedValue-Number(this.initValue)}`;
+             break;
+             case'*':
+             this.initValue=`${this.savedValue*Number(this.initValue)}`;
+             break;
+             case'/':
+             this.initValue=`${this.savedValue/Number(this.initValue)}`;
+             break;
+         }
+     }
+   }
+  }).mount('#app')
+    </script>
+
+
+</body>
+
+</html>
